@@ -1,0 +1,1 @@
+<label>İlgili grup<select name="group"><option value="">Tüm gruplar</option>{% for group in groups %}<option value="{{ group.id }}" {% if request.args.get('group')==group.id|string %}selected{% endif %}>{{ group.name }}</option>{% endfor %}</select></label>

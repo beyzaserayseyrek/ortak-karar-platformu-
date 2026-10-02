@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block content %}<section class="card"><div class="eyebrow">{{ error.code }}</div><h1>{{ 'Bu işlem için yetkin yok.' if error.code==403 else 'Bu isteği tamamlayamadık.' }}</h1><p>{{ error.description }}</p><a href="/">Genel bakışa dön</a></section>{% endblock %}

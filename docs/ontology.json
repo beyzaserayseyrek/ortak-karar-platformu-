@@ -1,0 +1,12 @@
+{
+  "name": "Ortak basitleştirilmiş ontoloji",
+  "concepts": ["Kullanıcı", "Grup", "Konu", "AltKonu", "Öneri", "Karar", "Kural", "Bilirkişi", "Katkı"],
+  "relations": [
+    ["Kullanıcı", "üyesidir", "Grup"], ["AltKonu", "bağlıdır", "Konu"],
+    ["Öneri", "etkiler", "Grup"], ["Öneri", "sonuçlanır", "Karar"],
+    ["Karar", "tabidir", "Kural"], ["Bilirkişi", "uzmanlık alanında görüş verir", "Konu"],
+    ["Kullanıcı", "sunar", "Katkı"], ["Katkı", "açıklar", "Konu"]
+  ],
+  "machine_rules": {"R1": "effect != publish_private", "R2": "effect != exclude_group", "R3": "restrictive => independent_review and participation >= max(r,0.67) and accept/(accept+reject)>=2/3", "R4": "for each affected group: group_participation >= threshold"},
+  "limitations": "RDF/OWL çıkarım motoru değildir. Açık kavram/ilişki modeli, SQL ilişkileri ve policy.py kuralları birlikte kullanılır. Serbest metnin anlamını tam doğrulamaz."
+}
