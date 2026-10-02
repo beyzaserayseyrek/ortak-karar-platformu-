@@ -1,26 +1,21 @@
 # Teslim durumu
 
-Kaynak, test, kurulum, README, kapsam belgesi ve tek sayfalık rapor yerel olarak hazırdır.
-Raporun son satırında kullanıcının verdiği gerçek repository adresi tıklanabilirdir.
-
-**GitHub yüklemesi tamamlanmadı; rapor nihai teslim değildir.**
+Kaynak kod, testler, kurulum, README, kapsam belgesi ve tek sayfalık rapor
+GitHub main dalına yüklendi. Kaynak teslim commit’i:
+226ebe2703b3ee314602d42653be62ff570ef0ac
 
 Hedef: https://github.com/beyzaserayseyrek/ortak-karar-platformu-
 Dal: main
 Canlı demo: Yayımlanmadı.
 
-Engeller:
-1. GitHub entegrasyonunda Contents yazma denemesi 403 ile reddedildi.
-2. Yerel Git için kayıtlı kullanıcı yetkilendirmesi yok.
+main dalı yeniden okunarak kaynak commit’i doğrulandı; yerel ve uzak Git
+ağaçları eşleşti. Sonraki belge commit’i raporu teslim durumuna getirir.
+Force push kullanılmadı. Mevcut GitHub geçmişi korundu.
 
-Gereken adım: GitHub bağlantısına hedef depo için Contents read/write erişimi
-verilmesi veya bu bilgisayarda GitHub hesabıyla Git kimlik doğrulamasının tamamlanması.
-Token veya şifreyi sohbet içine yapıştırmayın.
+Rapor: docs/rapor.pdf (bir A4 sayfa, tıklanabilir kaynak bağlantısı).
+Kurulum ve örnek hesaplar: README.md. Test sonuçları: docs/TEST_RESULTS.md.
 
-Yetkilendirmeden sonra README'deki fetch / inceleme / push / SHA doğrulama
-adımlarını uygulayın. Uzak değişiklikleri koruyun, force push kullanmayın.
-Gönderimden sonra rapor ve README durumunu güncelleyin.
-
-`ortak-kaynak.zip` yalnız Git'te izlenen dosyaları içerir; yerel veritabanını,
-oturum anahtarını, sanal ortamı, gerçek kişisel bilgileri veya token içermez.
-`ortak-git.bundle` yerel commit geçmişinin taşınabilir kopyasıdır.
+ZIP yalnız izlenen kaynakları içerir; veritabanı, oturum anahtarı ve sanal
+ortam dahil değildir. Git bundle yerel geliştirme geçmişinin yedeğidir;
+GitHub bağlantısı üzerinden oluşan commit SHA’ları farklı olabilir.
+Geliştirmeye GitHub’dan yeni clone alarak devam edilmesi önerilir.

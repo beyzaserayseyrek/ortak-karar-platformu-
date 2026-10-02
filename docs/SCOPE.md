@@ -18,7 +18,7 @@ Puan politikası +5 / +3 ve UTC gününde 20 puan; günlük 40 mesajdır.
 2. Deterministik kurallar, sabit seçmen, azınlık ve gizleme incelemesi.
 3. Öğrenme katkıları, puan, sürümler, bilirkişi, keşif ve demo özet.
 4. Otomatik test, masaüstü/mobil kontrol, dokümantasyon ve rapor.
-5. GitHub gönderimi ve uzak SHA doğrulaması (entegrasyon yazma erişimi bekleniyor).
+5. GitHub gönderimi ve uzak SHA doğrulaması (tamamlandı).
 
 ## Karşılanma özeti
 - 1–4: Mobil web ve temel akışlar çalışır; native yok.
@@ -33,4 +33,4 @@ Puan politikası +5 / +3 ve UTC gününde 20 puan; günlük 40 mesajdır.
   son 12 kayıt sınırı nedeniyle tüm çoğunluk/azınlık görüşlerini kapsama garantisi yok.
 - 12: Eklemeli hash zinciri ve iki dosyalı yerel kopyalama var; bağımsız düğümler/mutabakat yok.
 - 13–15: Testler, örnek senaryolar, belge ve ortak görsel dil var. Ayrıntılar TEST_RESULTS.md.
-- 16: Gerçek depo erişimi doğrulandı; yazma 403 nedeniyle yükleme bekliyor.
+- 16: Gerçek depo erişimi doğrulandı; yenilenen bağlantıyla kaynaklar main dalına yüklendi ve doğrulandı.

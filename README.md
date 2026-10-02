@@ -2,9 +2,9 @@
 
 Türkçe, mobil uyumlu bir üniversite ders projesi. Öğrenciler öğrenme soruları önerir, sabit seçmen listesiyle oy kullanır, kabul edilen konularda kaynak ve gerekçeli akran açıklamaları paylaşır.
 
-**Teslim durumu:** Yerel çalışan prototip; GitHub gönderimi henüz doğrulanmadı. Bağlı GitHub entegrasyonu dosya yazarken `403 Resource not accessible by integration` döndürdü. Rapor nihai teslim olarak işaretlenmemiştir.
+**Teslim durumu:** Kaynak kod, testler, kurulum dosyaları ve rapor GitHub `main` dalına gönderildi. Kaynak teslim commit'i: `226ebe2703b3ee314602d42653be62ff570ef0ac`. Yerel ve uzak Git ağaçları eşleştirilerek dosya bütünlüğü doğrulandı. Sonraki belge commit'i rapordaki bekleme notunu kaldırır.
 
-**Kaynak deposu:** https://github.com/beyzaserayseyrek/ortak-karar-platformu- — depo adresi ve hesap yetkileri API ile doğrulandı; bu, dosyaların yüklendiği anlamına gelmez.
+**Kaynak deposu:** https://github.com/beyzaserayseyrek/ortak-karar-platformu-
 
 **Canlı demo:** Yayımlanmadı. `http://127.0.0.1:5000` yalnız yerel çalıştırma adresidir.
 
@@ -133,7 +133,7 @@ Konu takibi açıldığında yeni katkılar dashboard bildirimi üretir. Soru ve
 
 ## GitHub'a gönderme
 
-`.gitignore`, `.env`, yerel veritabanı, anahtarlar ve üretilen dosyaları dışlar. `seed.py` yalnız kurgusal hesaplar içerir. Göndermeden önce `git status --short` ve `git diff --cached` kontrol edilir. Yerel Git push denemesi de kayıtlı kimlik bilgisi olmadığı için tamamlanamadı.
+`.gitignore`, `.env`, yerel veritabanı, anahtarlar ve üretilen dosyaları dışlar. `seed.py` yalnız kurgusal hesaplar içerir. Göndermeden önce `git status --short` ve `git diff --cached` kontrol edilir. Gönderim GitHub bağlantısı üzerinden tamamlandı. Yerel terminal için ayrıca Git kimlik doğrulaması gerekebilir.
 
 GitHub bağlantısının hedef depo için **Contents: read and write** izni gerekir. Hesabın yönetici olması entegrasyonun yazma izni olduğu anlamına gelmez. Entegrasyon erişimini güncelledikten veya Git için kendi hesabınla kimlik doğruladıktan sonra:
 
@@ -147,7 +147,7 @@ git rev-parse HEAD
 git ls-remote origin refs/heads/main
 ```
 
-Son iki SHA eşleşmeden gönderim tamamlanmış sayılmaz. Uzak dalda yeni değişiklik varsa önce koruyarak birleştirin; **force push kullanmayın**. Başarılı gönderimden sonra rapordaki bekleme notu ve README teslim durumu güncellenmelidir.
+Son iki SHA eşleşmeden gönderim tamamlanmış sayılmaz. Uzak dalda yeni değişiklik varsa önce koruyarak birleştirin; **force push kullanmayın**. İlk gönderim doğrulandı; rapor ve README teslim durumu güncellendi.
 
 ## Rapor
 

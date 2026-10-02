@@ -58,7 +58,11 @@ macOS işlem kısıtıyla başlamadı; arayüz kontrolleri iç tarayıcı üzeri
 
 ## GitHub
 
-Depo API ile doğrulandı; bağlı hesabın `push: true` yetkisi göründü.
-Gerçek Contents API yazımı `403 Resource not accessible by integration` döndürdü.
-Yerel `git push` ise kayıtlı GitHub kimliği olmadığı için gönderemedi.
-Uzak `main` üzerinde son commit doğrulanamadı. **Gönderim tamamlanmadı.**
+Yenilenen bağlantıyla yazma işlemi başarılı oldu. Kaynak teslim commit'i:
+`226ebe2703b3ee314602d42653be62ff570ef0ac`.
+
+`main` ref'i ayrıca okunarak bu SHA doğrulandı. Yerel Git ağacı ve yüklenen
+GitHub ağacı aynı: `9852e9bc229877e929d3dbeb6878596c442eacee`.
+Bu eşleşme izlenen tüm dosyaları ve PDF raporunu kapsar. Force push kullanılmadı.
+Daha sonraki belge commit'i yalnız teslim durumunu ve raporun bekleme notunu günceller.
+Yerel 19 test sonucu yukarıdadır; GitHub Actions sonucu ayrıca değerlendirilmelidir.
