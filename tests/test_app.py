@@ -87,6 +87,7 @@ class AppTests(unittest.TestCase):
         p=one('SELECT * FROM proposals WHERE id=3')
         self.assertEqual(p['status'],'accepted');self.assertFalse(p['applied'])
         self.assertIn('R1',json.loads(p['decision'])['violations'])
+        self.assertNotIn('R3',json.loads(p['decision'])['violations'])
         self.assertIsNone(one('SELECT * FROM topics WHERE proposal_id=3'))
     def test_helpfulness_dedup_and_self_rating(self):
         self.login()

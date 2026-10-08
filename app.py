@@ -1,9 +1,8 @@
-"""Ortak: a small, server-rendered Flask application backed by SQLite."""
+"""Müzakere: a small, server-rendered Flask application backed by SQLite."""
 import json
 import os
 import secrets
 import sqlite3
-import time
 from datetime import date
 from contextlib import closing
 from functools import wraps
@@ -12,43 +11,13 @@ from urllib.parse import urlparse
 
 from flask import Flask, abort, flash, g, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
-from policy import RULES, EFFECTS, tally, check_rules, event_digest, verify_events
-from ai import DemoProvider
+from policy import RULES, EFFECTS, LABELS, verify_events
+from ai import DemoProvider, SummaryService, UnavailableProvider
+from storage import db, one, allrows, run, now, event, award, notify
+from voting import start_voting, close_voting
 
 ROOT = Path(__file__).parent
-LABELS = {'draft': '✎ Taslak', 'voting': '◷ Oylamada', 'accepted': '✓ Kabul', 'rejected': '× Ret', 'insufficient': '! Katılım yetersiz'}
 
-
-def db():
-    if 'db' not in g:
-        g.db = sqlite3.connect(g.app_db, timeout=10)
-        g.db.row_factory = sqlite3.Row
-        g.db.execute('PRAGMA foreign_keys=ON')
-    return g.db
-
-
-def one(sql, args=()): return db().execute(sql, args).fetchone()
-def allrows(sql, args=()): return db().execute(sql, args).fetchall()
-def run(sql, args=()): return db().execute(sql, args)
-def now(): return time.time()
-
-
-def event(kind, object_id):
-    previous = one('SELECT digest FROM events ORDER BY id DESC LIMIT 1')
-    previous = previous['digest'] if previous else '0' * 64
-    stamp = now()
-    run('INSERT INTO events(kind,object_id,stamp,previous,digest) VALUES(?,?,?,?,?)',
-        (kind, object_id, stamp, previous, event_digest(kind, object_id, stamp, previous)))
-
-
-def award(user_id, source, reason, amount):
-    earned = one('SELECT COALESCE(SUM(amount),0) n FROM points WHERE user_id=? AND created>=?', (user_id, int(now() // 86400) * 86400))['n']
-    amount = min(amount, max(0, 20 - earned))
-    if amount: run('INSERT OR IGNORE INTO points(user_id,source,reason,amount,created) VALUES(?,?,?,?,?)', (user_id, source, reason, amount, now()))
-
-
-def notify(user_id, body, link):
-    run('INSERT INTO notifications(user_id,body,link,created) VALUES(?,?,?,?)', (user_id, body, link, now()))
 
 
 def login_required(fn):
@@ -81,65 +50,6 @@ def get_proposal(pid):
     return p
 
 
-def start_voting(pid, hours=24):
-    p = one('SELECT * FROM proposals WHERE id=?', (pid,))
-    if p['status'] != 'draft': raise ValueError('Yalnız taslaklar oylamaya açılır.')
-    group_ids = json.loads(p['group_ids'])
-    # Only the administrator freezes eligibility; author cannot choose individual voters.
-    for gid in group_ids:
-        run('INSERT INTO electorate SELECT ?,id,group_id FROM users WHERE group_id=?', (pid, gid))
-    r = one('SELECT r FROM settings WHERE id=1')['r']
-    run("UPDATE proposals SET status='voting',deadline=?,r=? WHERE id=?", (now() + hours * 3600, r, pid))
-    for voter in allrows('SELECT user_id FROM electorate WHERE proposal_id=?', (pid,)):
-        notify(voter['user_id'], f'Oylama açıldı: {p["title"]}', f'/proposal/{pid}')
-    event('voting_started', pid)
-
-
-def close_voting(pid):
-    p = one('SELECT * FROM proposals WHERE id=?', (pid,))
-    if p['status'] != 'voting': return
-    if p['deadline'] > now(): raise ValueError('Oylama süresi henüz bitmedi.')
-    voters = allrows('SELECT * FROM electorate WHERE proposal_id=?', (pid,))
-    votes = allrows('SELECT * FROM votes WHERE proposal_id=?', (pid,))
-    threshold = max(p['r'], .67) if p['restrictive'] else p['r']
-    result = tally([v['choice'] for v in votes], len(voters), threshold)
-    rates = []
-    for gid in json.loads(p['group_ids']):
-        ids = {v['user_id'] for v in voters if v['group_id'] == gid}
-        rates.append(sum(v['user_id'] in ids for v in votes) / len(ids) if ids else 0)
-    violations = check_rules(p, rates, result['counts'])
-    result['violations'] = violations
-    applied = result['status'] == 'accepted' and not violations
-    # Concurrent edits never silently overwrite a newer version: compare stored base.
-    if applied and p['kind'] == 'edit':
-        payload = json.loads(p['body'])
-        target = one('SELECT * FROM topics WHERE id=?', (p['target'],))
-        if target['body'] != payload['old_body'] or target['title'] != payload['old_title']:
-            applied = False
-            result['violations'].append('SÜRÜM')
-    run('UPDATE proposals SET status=?,decision=?,applied=? WHERE id=?', (result['status'], json.dumps(result), int(applied), pid))
-    event('vote_result', pid)
-    event('rule_check', pid)
-    if applied:
-        if p['kind'] in ('topic', 'subtopic'):
-            tid = run('INSERT INTO topics(title,body,category,group_ids,parent,proposal_id) VALUES(?,?,?,?,?,?)',
-                      (p['title'], p['body'], p['category'], p['group_ids'], p['parent'], pid)).lastrowid
-            run('INSERT INTO topic_versions(topic_id,proposal_id,title,body,created) VALUES(?,?,?,?,?)', (tid, pid, p['title'], p['body'], now()))
-        elif p['kind'] == 'edit':
-            payload = json.loads(p['body'])
-            run('UPDATE topics SET title=?,body=? WHERE id=?', (p['title'], payload['new_body'], p['target']))
-            run('INSERT INTO topic_versions(topic_id,proposal_id,title,body,created) VALUES(?,?,?,?,?)', (p['target'], pid, p['title'], payload['new_body'], now()))
-            event('edit_accepted', pid)
-        elif p['kind'] == 'remove_section':
-            run('UPDATE messages SET hidden=1,hidden_reason=? WHERE topic_id=? AND created<=?', (p['body'], p['target'], p['created']))
-            event('discussion_hidden', p['target'])
-        elif p['kind'] == 'remove':
-            run('UPDATE messages SET hidden=1,hidden_reason=? WHERE id=?', (p['body'], p['target']))
-            event('content_hidden', p['target'])
-        award(p['author'], f'proposal:{pid}', 'Kabul edilip uygulanan öneri', 5)
-    for voter in voters: notify(voter['user_id'], f'Karar: {p["title"]} — {LABELS[result["status"]]}', f'/proposal/{pid}')
-
-
 def create_app(test_config=None):
     # Minimal .env loader, no subprocess and no secret printing.
     envfile = ROOT / '.env'
@@ -148,8 +58,6 @@ def create_app(test_config=None):
             if '=' in line and not line.lstrip().startswith('#'):
                 key, value = line.split('=', 1)
                 os.environ.setdefault(key.strip(), value.strip())
-    if os.getenv('AI_PROVIDER','demo') != 'demo':
-        raise RuntimeError('Bu teslim yalnız AI_PROVIDER=demo destekler. Gerçek sağlayıcı önce uygulanmalıdır.')
     app = Flask(__name__)
     instance = ROOT / 'instance'
     instance.mkdir(exist_ok=True)
@@ -164,6 +72,10 @@ def create_app(test_config=None):
                       SESSION_COOKIE_HTTPONLY=True, SESSION_COOKIE_SAMESITE='Lax', SESSION_COOKIE_SECURE=os.getenv('COOKIE_SECURE') == '1',
                       MAX_CONTENT_LENGTH=64 * 1024, PERMANENT_SESSION_LIFETIME=3600)
     if test_config: app.config.update(test_config)
+    provider = app.config.get('SUMMARY_PROVIDER')
+    if provider is None:
+        provider = DemoProvider() if os.getenv('AI_PROVIDER', 'demo') == 'demo' else UnavailableProvider()
+    app.extensions['summary_service'] = SummaryService(provider)
     with closing(sqlite3.connect(app.config['DATABASE'])) as conn:
         conn.executescript((ROOT / 'schema.sql').read_text()); conn.commit()
 
@@ -211,6 +123,7 @@ def create_app(test_config=None):
     @app.errorhandler(400)
     @app.errorhandler(403)
     @app.errorhandler(404)
+    @app.errorhandler(409)
     @app.errorhandler(413)
     def error_page(error): return render_template('error.html', error=error), error.code
 
@@ -328,9 +241,9 @@ def create_app(test_config=None):
             effect=request.form.get('effect',p['effect'])
             if effect not in EFFECTS: raise ValueError('Geçerli bir etki seçin.')
             if p['kind'] in ('remove','remove_section'): effect='hide_content'
-            run('UPDATE proposals SET group_ids=?,effect=?,restrictive=? WHERE id=?', (json.dumps(gids),effect,int(effect!='learning'),pid))
             hours = int(request.form.get('hours',24))
             if not 1 <= hours <= 168: raise ValueError('Süre 1–168 saat olmalı.')
+            run('UPDATE proposals SET group_ids=?,effect=?,restrictive=? WHERE id=?', (json.dumps(gids),effect,int(effect!='learning'),pid))
             start_voting(pid, hours); flash('Oylama açıldı; seçmen listesi ve r değeri sabitlendi.')
         except ValueError as exc: flash(str(exc))
         return redirect(url_for('proposal',pid=pid))
@@ -386,9 +299,8 @@ def create_app(test_config=None):
     def topics():
         q=request.args.get('q','')[:100]; gid=request.args.get('group','')
         page=max(1,request.args.get('page',1,type=int))
-        rows=allrows('SELECT * FROM topics WHERE title LIKE ? ORDER BY id DESC',(f'%{q}%',))
-        if gid: rows=[t for t in rows if gid in [str(x) for x in json.loads(t['group_ids'])]]
-        return render_template('topics.html',items=rows[(page-1)*12:page*12],page=page,more=len(rows)>page*12,q=q)
+        rows=allrows('SELECT t.* FROM topics t WHERE title LIKE ? AND (?=\'\' OR EXISTS (SELECT 1 FROM json_each(t.group_ids) j WHERE CAST(j.value AS TEXT)=?)) ORDER BY id DESC LIMIT 13 OFFSET ?', (f'%{q}%',gid,gid,(page-1)*12))
+        return render_template('topics.html',items=rows[:12],page=page,more=len(rows)>12,q=q)
 
     @app.get('/topic/<int:tid>')
     @login_required
@@ -475,6 +387,7 @@ def create_app(test_config=None):
     def hide(mid):
         m=one('SELECT m.*,t.group_ids,t.category FROM messages m JOIN topics t ON t.id=m.topic_id WHERE m.id=?',(mid,))
         if not m: abort(404)
+        if m['hidden']: abort(409, 'Zaten gizlenmiş içerik için yeni geçici gizleme açılamaz.')
         try: reason=must_text('reason',15,2000)
         except ValueError as exc: abort(400,str(exc))
         run('UPDATE messages SET hidden=1,hidden_reason=? WHERE id=?',(f'Geçici gizleme; inceleme bekliyor: {reason}',mid)); event('temporary_hidden',mid)
@@ -514,8 +427,20 @@ def create_app(test_config=None):
     def summary(tid):
         current=one('SELECT * FROM topics WHERE id=?',(tid,))
         if not current: abort(404)
-        messages=[dict(m) for m in allrows('SELECT id,body,kind FROM messages WHERE topic_id=? AND hidden=0 ORDER BY id DESC LIMIT 12',(tid,))]
-        return render_template('summary.html',summary=DemoProvider().summarize(messages,dict(current),[dict(t) for t in allrows('SELECT id,title FROM topics WHERE id!=? ORDER BY id DESC LIMIT 50',(tid,))]),tid=tid)
+        page=max(1,request.args.get('page',1,type=int))
+        messages=[]; more=False
+        # Each kind has its own quota: recent activity cannot crowd out counterarguments.
+        for kind in ('explanation','counter','question','resource'):
+            rows=allrows('SELECT id,body,kind FROM messages WHERE topic_id=? AND hidden=0 AND kind=? ORDER BY id DESC LIMIT 13 OFFSET ?', (tid,kind,(page-1)*12))
+            more = more or len(rows)>12
+            messages.extend(dict(m) for m in rows[:12])
+        candidates=[dict(t) for t in allrows('SELECT id,title FROM topics WHERE id!=? ORDER BY id DESC LIMIT 50',(tid,))]
+        result=app.extensions['summary_service'].summarize(messages, {'id':tid,'title':current['title']}, candidates)
+        # Topic pagination includes hidden placeholders; count them for correct source links.
+        for item in result['items']:
+            rank=one('SELECT COUNT(*) n FROM messages WHERE topic_id=? AND id<=?',(tid,item['id']))['n']
+            item['page']=(rank-1)//20+1
+        return render_template('summary.html',summary=result,tid=tid,page=page,more=more,proposal_id=current['proposal_id'])
 
     @app.get('/contributions')
     @login_required
@@ -532,8 +457,7 @@ def create_app(test_config=None):
         gid=request.args.get('group',g.user['group_id'],type=int)
         tid=request.args.get('topic',type=int)
         members=allrows('SELECT id,nickname FROM users WHERE group_id=? LIMIT 30',(gid,))
-        topics=[t for t in allrows('SELECT * FROM topics ORDER BY id DESC') if gid in json.loads(t['group_ids']) and (not tid or tid==t['id'])][:12]
-        ids=[t['id'] for t in topics]
+        topics=allrows('SELECT t.* FROM topics t WHERE EXISTS (SELECT 1 FROM json_each(t.group_ids) j WHERE j.value=?) AND (? IS NULL OR t.id=?) ORDER BY t.id DESC LIMIT 12',(gid,tid,tid))
         contributions=[]
         for t in topics:
             contributions += allrows('SELECT DISTINCT u.nickname,m.topic_id FROM messages m JOIN users u ON m.author=u.id WHERE m.topic_id=? AND m.hidden=0 LIMIT 20',(t['id'],))

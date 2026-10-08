@@ -1,6 +1,9 @@
 """Explicit, deterministic classroom policy; no AI decisions."""
 import hashlib
 import json
+from typing import Protocol
+from dataclasses import dataclass
+from collections.abc import Callable
 
 RULES = {
     'R1': 'Kişisel bilgilerin herkese açılmasına izin verilmez.',
@@ -25,17 +28,69 @@ def tally(choices, eligible, r):
     return dict(status=status, reason=reason, counts=counts, participation=participation, eligible=eligible)
 
 
+class VotingPolicy(Protocol):
+    def threshold(self, r: float) -> float: ...
+    def evaluate(self, choices: list[str], eligible: int, r: float) -> dict: ...
+
+
+class StandardVotingPolicy:
+    def threshold(self, r): return r
+
+    def evaluate(self, choices, eligible, r):
+        return tally(choices, eligible, self.threshold(r))
+
+
+class RestrictiveVotingPolicy(StandardVotingPolicy):
+    def threshold(self, r): return max(r, .67)
+
+
+def policy_for(restrictive) -> VotingPolicy:
+    return RestrictiveVotingPolicy() if restrictive else StandardVotingPolicy()
+
+
+@dataclass
+class RuleContext:
+    proposal: object
+    group_rates: list[float]
+    counts: dict
+
+
+@dataclass
+class RuleHandler:
+    """A collecting chain: every handler delegates, even after a violation."""
+    code: str
+    fails: Callable[[RuleContext], bool]
+    successor: 'RuleHandler | None' = None
+
+    def check(self, context: RuleContext) -> list[str]:
+        result = [self.code] if self.fails(context) else []
+        if self.successor:
+            result.extend(self.successor.check(context))
+        return result
+
+
+def review_missing(context):
+    p, counts = context.proposal, context.counts
+    decisive = counts['accept'] + counts['reject']
+    return bool(p['restrictive'] and (
+        not p['review'] or not p['reviewer'] or not decisive
+        or counts['accept'] * 3 < decisive * 2))
+
+
+def build_rule_chain():
+    review = RuleHandler('R3', review_missing)
+    participation = RuleHandler('R4', lambda c: any(
+        rate < policy_for(c.proposal['restrictive']).threshold(c.proposal['r'])
+        for rate in c.group_rates), review)
+    exclusion = RuleHandler('R2', lambda c: c.proposal['effect'] == 'exclude_group', participation)
+    return RuleHandler('R1', lambda c: c.proposal['effect'] == 'publish_private', exclusion)
+
+
+RULE_CHAIN = build_rule_chain()
+
+
 def check_rules(proposal, group_rates, counts):
-    violations = []
-    if proposal['effect'] == 'publish_private': violations.append('R1')
-    if proposal['effect'] == 'exclude_group': violations.append('R2')
-    threshold = max(proposal['r'], .67) if proposal['restrictive'] else proposal['r']
-    if any(rate < threshold for rate in group_rates): violations.append('R4')
-    if proposal['restrictive']:
-        decisive = counts['accept'] + counts['reject']
-        if not proposal['review'] or not proposal['reviewer'] or not decisive or counts['accept'] / decisive < 2 / 3:
-            violations.append('R3')
-    return violations
+    return RULE_CHAIN.check(RuleContext(proposal, group_rates, counts))
 
 
 def event_digest(kind, object_id, stamp, previous):
@@ -51,3 +106,6 @@ def verify_events(rows):
             return False, row['id']
         previous = expected
     return True, None
+
+
+LABELS = {'draft': '✎ Taslak', 'voting': '◷ Oylamada', 'accepted': '✓ Kabul', 'rejected': '× Ret', 'insufficient': '! Katılım yetersiz'}

@@ -18,19 +18,20 @@ def seed(app):
         hashed=generate_password_hash(DEMO_PASSWORD)
         for username,nickname,role,gid,expertise in accounts:
             run('INSERT INTO users(username,nickname,password,fullname,birthdate,address,group_id,role,expertise) VALUES(?,?,?,?,?,?,?,?,?)',(username,nickname,hashed,'Örnek Öğrenci','2003-01-01','Kurgusal Kampüs / Demo',gid,role,expertise))
-        def proposal(title,body,gid=1,kind='topic',effect='learning',target=None,parent=None,votes=None,finish=True):
+        def proposal(title,body,gid=1,kind='topic',effect='learning',target=None,parent=None,votes=None,finish=True,review=None):
             pid=run('INSERT INTO proposals(author,kind,title,body,category,tags,group_ids,target,parent,restrictive,effect,created) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)',(1,kind,title,body,'Algoritmalar' if gid==1 else 'İstatistik','ders, çalışma grubu',json.dumps([gid]),target,parent,int(effect!='learning'),effect,time.time()-90000)).lastrowid
             event('proposal_created',pid);start_voting(pid,24)
             for uid,choice,reason in votes or []: run('INSERT INTO votes VALUES(?,?,?,?)',(pid,uid,choice,reason));event('vote_recorded',pid)
+            if review:
+                run('UPDATE proposals SET review=?,reviewer=5 WHERE id=?',(review,pid))
             if finish:
                 run('UPDATE proposals SET deadline=? WHERE id=?',(time.time()-1,pid));close_voting(pid)
             return pid
         p1=proposal('İkili aramayı birlikte çözelim','İkili arama neden sıralı dizi gerektirir? Haftalık çalışma grubunda örnekler ve karmaşıklık analiziyle inceleyelim.',votes=[(1,'accept','Birlikte örnek çözmek kavramı netleştirecek.'),(2,'accept','Önce doğrusal aramayla karşılaştıralım.'),(3,'reject','Önce özyineleme konusundaki eksikleri gidermeliyiz.')])
         tid=one('SELECT id FROM topics WHERE proposal_id=?',(p1,))['id']
         p2=proposal('Olasılık dağılımları için soru saati','Binom ve normal dağılımın hangi koşullarda kullanılacağını ders örnekleriyle tartışalım.',gid=2,votes=[(5,'accept','Ders tekrarına katkı sağlayabilir.')])
-        p3=proposal('Grup üyelerinin adreslerini ortak listede açalım','Ders gösterimi için kurala aykırı örnek: özel adreslerin herkese açılması. Gerçek kişisel bilgi içermez.',effect='publish_private',votes=[(1,'accept','Kurgusal test oyu.'),(2,'accept','Kurgusal test oyu.'),(3,'accept','Kurgusal test oyu.'),(4,'accept','Kurgusal test oyu.')])
+        p3=proposal('Grup üyelerinin adreslerini ortak listede açalım','Ders gösterimi için kurala aykırı örnek: özel adreslerin herkese açılması. Gerçek kişisel bilgi içermez.',effect='publish_private',votes=[(1,'accept','Kurgusal test oyu.'),(2,'accept','Kurgusal test oyu.'),(3,'accept','Kurgusal test oyu.'),(4,'accept','Kurgusal test oyu.')],review='İnceleme kaydı: özel bilgilerin açılması R1 ile yasaktır.')
         # Review does not bypass hard rights rules.
-        run('UPDATE proposals SET review=?,reviewer=5 WHERE id=?',('İnceleme kaydı: özel bilgilerin açılması R1 ile yasaktır.',p3))
         sub=proposal('Özyinelemeli ikili arama','Taban durumu ve özyinelemeli çağrılar nasıl tasarlanır? Bir çağrı ağacı çizerek birlikte çözelim.',kind='subtopic',parent=tid,votes=[(1,'accept','Örnek kodu açıklayabiliriz.'),(2,'accept','Çağrı ağacı faydalı olur.')])
         editbody=json.dumps({'old_title':'İkili aramayı birlikte çözelim','old_body':one('SELECT body FROM topics WHERE id=?',(tid,))['body'],'new_body':'İkili arama neden sıralı dizi gerektirir? Önce doğrusal aramayla karşılaştırıp sonra adım sayısını hesaplayalım. Her öğrenci gerekçeli bir örnek paylaşsın.'},ensure_ascii=False)
         proposal('İkili arama: karşılaştırarak öğrenelim',editbody,kind='edit',target=tid,votes=[(1,'accept','Karşılaştırma öğrenmeyi kolaylaştırır.'),(2,'accept','Adım sayısını ölçelim.')])
