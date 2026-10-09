@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc"><title id="title">Kullanım durumları</title><desc id="desc">Aktörler kodun rolleridir. Yönetici ve bilirkişi, üye işlevlerini de kullanır.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M1,1 L9,5 L1,9" fill="none" stroke="#172b4d"/></marker><marker id="triangle" markerWidth="13" markerHeight="13" refX="12" refY="6" orient="auto"><path d="M1,1 L12,6 L1,11 Z" fill="white" stroke="#172b4d"/></marker></defs>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#172b4d;font-size:16px}.title{font-size:30px;font-weight:bold}.sub{font-size:15px;fill:#526479}.small{font-size:14px}.bold{font-weight:bold}line,path,rect,ellipse,circle{vector-effect:non-scaling-stroke}</style>
+<rect width="1200" height="800" fill="#f7f9fc"/>
+<text x="35" y="47" class="title" text-anchor="start">Kullanım durumları</text>
+<text x="35" y="78" class="sub" text-anchor="start">Aktörler kodun rolleridir. Yönetici ve bilirkişi, üye işlevlerini de kullanır.</text>
+<rect x="280" y="110" width="660" height="610" fill="none" stroke="#526479"/>
+<text x="300" y="136" class="bold" text-anchor="start">Müzakere web uygulaması</text>
+<circle cx="130" cy="230" r="13" fill="white" stroke="#172b4d"/>
+<line x1="130" y1="243" x2="130" y2="280" stroke="#172b4d" stroke-width="1.4"/>
+<line x1="105" y1="258" x2="155" y2="258" stroke="#172b4d" stroke-width="1.4"/>
+<line x1="130" y1="280" x2="108" y2="308" stroke="#172b4d" stroke-width="1.4"/>
+<line x1="130" y1="280" x2="152" y2="308" stroke="#172b4d" stroke-width="1.4"/>
+<text x="130" y="332" class="bold" text-anchor="middle">Üye</text>
+<circle cx="1060" cy="205" r="13" fill="white" stroke="#172b4d"/>
+<line x1="1060" y1="218" x2="1060" y2="255" stroke="#172b4d" stroke-width="1.4"/>
+<line x1="1035" y1="233" x2="1085" y2="233" stroke="#172b4d" stroke-width="1.4"/>
+<line x1="1060" y1="255" x2="1038" y2="283" stroke="#172b4d" stroke-width="1.4"/>
+<line x1="1060" y1="255" x2="1082" y2="283" stroke="#172b4d" stroke-width="1.4"/>
+<text x="1060" y="307" class="bold" text-anchor="middle">Yönetici</text>
+<circle cx="1060" cy="545" r="13" fill="white" stroke="#172b4d"/>
+<line x1="1060" y1="558" x2="1060" y2="595" stroke="#172b4d" stroke-width="1.4"/>
+<line x1="1035" y1="573" x2="1085" y2="573" stroke="#172b4d" stroke-width="1.4"/>
+<line x1="1060" y1="595" x2="1038" y2="623" stroke="#172b4d" stroke-width="1.4"/>
+<line x1="1060" y1="595" x2="1082" y2="623" stroke="#172b4d" stroke-width="1.4"/>
+<text x="1060" y="647" class="bold" text-anchor="middle">Bilirkişi</text>
+<circle cx="130" cy="530" r="13" fill="white" stroke="#172b4d"/>
+<line x1="130" y1="543" x2="130" y2="580" stroke="#172b4d" stroke-width="1.4"/>
+<line x1="105" y1="558" x2="155" y2="558" stroke="#172b4d" stroke-width="1.4"/>
+<line x1="130" y1="580" x2="108" y2="608" stroke="#172b4d" stroke-width="1.4"/>
+<line x1="130" y1="580" x2="152" y2="608" stroke="#172b4d" stroke-width="1.4"/>
+<text x="130" y="632" class="bold" text-anchor="middle">Ziyaretçi</text>
+<ellipse cx="485" cy="185" rx="165.0" ry="37.0" fill="white" stroke="#0f766e" stroke-width="1.5"/>
+<text x="485" y="177" class="" text-anchor="middle">Konu / alt konu / düzenleme</text>
+<text x="485" y="200" class="" text-anchor="middle">önerisi oluştur</text>
+<line x1="155" y1="290" x2="320" y2="185" stroke="#172b4d" stroke-width="1.4"/>
+<ellipse cx="485" cy="290" rx="165.0" ry="37.0" fill="white" stroke="#0f766e" stroke-width="1.5"/>
+<text x="485" y="295" class="" text-anchor="middle">Oy kullan / değiştir</text>
+<line x1="155" y1="290" x2="320" y2="290" stroke="#172b4d" stroke-width="1.4"/>
+<ellipse cx="485" cy="395" rx="165.0" ry="37.0" fill="white" stroke="#0f766e" stroke-width="1.5"/>
+<text x="485" y="387" class="" text-anchor="middle">Tartış / kaynak paylaş /</text>
+<text x="485" y="410" class="" text-anchor="middle">yararlı değerlendir</text>
+<line x1="155" y1="290" x2="320" y2="395" stroke="#172b4d" stroke-width="1.4"/>
+<ellipse cx="485" cy="500" rx="165.0" ry="37.0" fill="white" stroke="#0f766e" stroke-width="1.5"/>
+<text x="485" y="505" class="" text-anchor="middle">Gerekçeyi incele / itiraz et</text>
+<line x1="155" y1="290" x2="320" y2="500" stroke="#172b4d" stroke-width="1.4"/>
+<ellipse cx="485" cy="635" rx="165.0" ry="37.0" fill="white" stroke="#0f766e" stroke-width="1.5"/>
+<text x="485" y="640" class="" text-anchor="middle">Kayıt ol / giriş yap</text>
+<line x1="155" y1="590" x2="320" y2="635" stroke="#172b4d" stroke-width="1.4"/>
+<ellipse cx="790" cy="245" rx="125.0" ry="40.0" fill="white" stroke="#0f766e" stroke-width="1.5"/>
+<text x="790" y="237" class="" text-anchor="middle">Kapsamı onayla /</text>
+<text x="790" y="260" class="" text-anchor="middle">oylamayı aç</text>
+<line x1="1035" y1="260" x2="915" y2="245" stroke="#172b4d" stroke-width="1.4"/>
+<ellipse cx="790" cy="380" rx="125.0" ry="40.0" fill="white" stroke="#0f766e" stroke-width="1.5"/>
+<text x="790" y="372" class="" text-anchor="middle">İncele / geçici gizle /</text>
+<text x="790" y="395" class="" text-anchor="middle">itiraza yanıt ver</text>
+<line x1="1035" y1="260" x2="915" y2="380" stroke="#172b4d" stroke-width="1.4"/>
+<ellipse cx="790" cy="550" rx="125.0" ry="40.0" fill="white" stroke="#0f766e" stroke-width="1.5"/>
+<text x="790" y="555" class="" text-anchor="middle">Danışma görüşü ver</text>
+<line x1="1035" y1="600" x2="915" y2="550" stroke="#172b4d" stroke-width="1.4"/>
+<text x="300" y="704" class="small" text-anchor="start">R1–R4 denetimi kapanışta sistemce yürütülür; ayrı insan aktör değildir.</text>
+<text x="35" y="778" class="small" text-anchor="start">Müzakere · Kaynak: bu depodaki uygulama · Ayrıntılar: docs/DESIGN.md</text></svg>

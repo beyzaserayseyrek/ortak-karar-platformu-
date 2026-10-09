@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1250" height="830" viewBox="0 0 1250 830" role="img" aria-labelledby="title desc"><title id="title">Öneri ve karar yaşam döngüsü</title><desc id="desc">Durum ile uygulanabilirlik ayrı alanlardır. Alt kutular görsel bileşiktir; yeni SQL durumları değildir.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M1,1 L9,5 L1,9" fill="none" stroke="#172b4d"/></marker><marker id="triangle" markerWidth="13" markerHeight="13" refX="12" refY="6" orient="auto"><path d="M1,1 L12,6 L1,11 Z" fill="white" stroke="#172b4d"/></marker></defs>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#172b4d;font-size:16px}.title{font-size:30px;font-weight:bold}.sub{font-size:15px;fill:#526479}.small{font-size:14px}.bold{font-weight:bold}line,path,rect,ellipse,circle{vector-effect:non-scaling-stroke}</style>
+<rect width="1250" height="830" fill="#f7f9fc"/>
+<text x="35" y="47" class="title" text-anchor="start">Öneri ve karar yaşam döngüsü</text>
+<text x="35" y="78" class="sub" text-anchor="start">Durum ile uygulanabilirlik ayrı alanlardır. Alt kutular görsel bileşiktir; yeni SQL durumları değildir.</text>
+<circle cx="80" cy="195" r="10" fill="#172b4d"/>
+<line x1="90" y1="195" x2="150" y2="195" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<rect x="150" y="150" width="230" height="90" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="164" y="178" class="bold" text-anchor="start">draft</text>
+<text x="164" y="205" class="" text-anchor="start">Öneri kaydedildi</text>
+<line x1="380" y1="195" x2="525" y2="195" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="393" y="163" class="small" text-anchor="start">admin / start</text>
+<rect x="525" y="150" width="260" height="90" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="539" y="178" class="bold" text-anchor="start">voting</text>
+<text x="539" y="205" class="" text-anchor="start">Seçmen + r + süre sabit</text>
+<path d="M650,150 L650,113 L810,113 L810,190 L785,190" fill="none" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="835" y="135" class="small" text-anchor="start">oy kullan / değiştir</text>
+<text x="835" y="158" class="small" text-anchor="start">[süre devam ediyor]</text>
+<line x1="650" y1="240" x2="650" y2="335" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="675" y="295" class="small" text-anchor="start">[deadline doldu] / close_voting</text>
+<path d="M650,335 L690,375 L650,415 L610,375 Z" fill="white" stroke="#172b4d"/>
+<rect x="55" y="465" width="300" height="100" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="69" y="493" class="bold" text-anchor="start">insufficient</text>
+<text x="69" y="520" class="" text-anchor="start">Seçmen yok / katılım yetersiz</text>
+<path d="M610,375 L205,375 L205,465" fill="none" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="80" y="358" class="small" text-anchor="start">[katılım koşulu sağlanmadı]</text>
+<rect x="450" y="465" width="320" height="100" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="464" y="493" class="bold" text-anchor="start">rejected</text>
+<text x="464" y="520" class="" text-anchor="start">Eşitlik / yalnız çekimser / ret</text>
+<line x1="650" y1="415" x2="650" y2="465" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="395" y="423" class="small" text-anchor="start">[katılım yeterli;</text>
+<text x="395" y="446" class="small" text-anchor="start">çoğunluk yok]</text>
+<rect x="880" y="465" width="310" height="100" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="894" y="493" class="bold" text-anchor="start">accepted</text>
+<text x="894" y="520" class="" text-anchor="start">Oy çoğunluğu kabul etti</text>
+<path d="M690,375 L1035,375 L1035,465" fill="none" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="895" y="330" class="small" text-anchor="start">[katılım yeterli ve</text>
+<text x="895" y="353" class="small" text-anchor="start">kabul &gt; ret]</text>
+<rect x="500" y="660" width="330" height="85" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="514" y="688" class="bold" text-anchor="start">applied = 0</text>
+<text x="514" y="715" class="" text-anchor="start">Kural / sürüm engeli</text>
+<rect x="880" y="660" width="310" height="85" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="894" y="688" class="bold" text-anchor="start">applied = 1</text>
+<text x="894" y="715" class="" text-anchor="start">Etki uygulandı</text>
+<path d="M970,565 L970,610 L665,610 L665,660" fill="none" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="545" y="601" class="small" text-anchor="start">[ihlaller var / eski düzenleme]</text>
+<line x1="1060" y1="565" x2="1060" y2="660" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="1070" y="611" class="small" text-anchor="start">[engel yok]</text>
+<text x="45" y="700" class="small" text-anchor="start">Kapanan karara itiraz eklenebilir.</text>
+<text x="45" y="723" class="small" text-anchor="start">İtiraz mevcut kararı değiştirmez;</text>
+<text x="45" y="746" class="small" text-anchor="start">yeni karar için yeni öneri gerekir.</text>
+<text x="35" y="808" class="small" text-anchor="start">Müzakere · Kaynak: bu depodaki uygulama · Ayrıntılar: docs/DESIGN.md</text></svg>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="940" viewBox="0 0 1300 940" role="img" aria-labelledby="title desc"><title id="title">Kabul edildi; uygulanması engellendi</title><desc id="desc">Somut senaryo: effect=publish_private; yeterli katılım ve kabul çoğunluğu var.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M1,1 L9,5 L1,9" fill="none" stroke="#172b4d"/></marker><marker id="triangle" markerWidth="13" markerHeight="13" refX="12" refY="6" orient="auto"><path d="M1,1 L12,6 L1,11 Z" fill="white" stroke="#172b4d"/></marker></defs>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#172b4d;font-size:16px}.title{font-size:30px;font-weight:bold}.sub{font-size:15px;fill:#526479}.small{font-size:14px}.bold{font-weight:bold}line,path,rect,ellipse,circle{vector-effect:non-scaling-stroke}</style>
+<rect width="1300" height="940" fill="#f7f9fc"/>
+<text x="35" y="47" class="title" text-anchor="start">Kabul edildi; uygulanması engellendi</text>
+<text x="35" y="78" class="sub" text-anchor="start">Somut senaryo: effect=publish_private; yeterli katılım ve kabul çoğunluğu var.</text>
+<rect x="25" y="115" width="190" height="65" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="39" y="143" class="bold" text-anchor="start">Oturumlu üye</text>
+<line x1="120" y1="180" x2="120" y2="840" stroke="#172b4d" stroke-width="1.4" stroke-dasharray="6 5"/>
+<rect x="300" y="115" width="190" height="65" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="314" y="143" class="bold" text-anchor="start">prepare / close</text>
+<line x1="395" y1="180" x2="395" y2="840" stroke="#172b4d" stroke-width="1.4" stroke-dasharray="6 5"/>
+<rect x="575" y="115" width="190" height="65" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="589" y="143" class="bold" text-anchor="start">Politika / kural zinciri</text>
+<line x1="670" y1="180" x2="670" y2="840" stroke="#172b4d" stroke-width="1.4" stroke-dasharray="6 5"/>
+<rect x="850" y="115" width="190" height="65" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="864" y="143" class="bold" text-anchor="start">SQLite</text>
+<line x1="945" y1="180" x2="945" y2="840" stroke="#172b4d" stroke-width="1.4" stroke-dasharray="6 5"/>
+<line x1="120" y1="230" x2="395" y2="230" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="132" y="217" class="small" text-anchor="start">Süre sonrası GET /proposal/&lt;id&gt;</text>
+<line x1="395" y1="290" x2="945" y2="290" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="407" y="277" class="small" text-anchor="start">seçmenler, oylar, öneri okunur</text>
+<line x1="395" y1="350" x2="670" y2="350" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="407" y="337" class="small" text-anchor="start">RestrictiveVotingPolicy.evaluate(...)</text>
+<line x1="670" y1="410" x2="395" y2="410" stroke="#172b4d" stroke-width="1.4" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<text x="407" y="397" class="small" text-anchor="start">status=accepted (oylama sonucu)</text>
+<line x1="395" y1="470" x2="670" y2="470" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="407" y="457" class="small" text-anchor="start">check_rules(proposal, rates, counts)</text>
+<path d="M670,530 L770,530 L770,565 L670,565" fill="none" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="700" y="518" class="small" text-anchor="start">R1 başarısız → R2 → R4 → R3</text>
+<line x1="670" y1="610" x2="395" y2="610" stroke="#172b4d" stroke-width="1.4" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<text x="407" y="597" class="small" text-anchor="start">violations=[R1, ...]</text>
+<line x1="395" y1="670" x2="945" y2="670" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="407" y="657" class="small" text-anchor="start">status=accepted, applied=0, decision JSON</text>
+<line x1="395" y1="730" x2="945" y2="730" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="407" y="717" class="small" text-anchor="start">vote_result + rule_check + bildirimler</text>
+<line x1="395" y1="805" x2="120" y2="805" stroke="#172b4d" stroke-width="1.4" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<text x="132" y="792" class="small" text-anchor="start">“Bu karar uygulanamaz” + R1 gerekçesi</text>
+<text x="35" y="918" class="small" text-anchor="start">Müzakere · Kaynak: bu depodaki uygulama · Ayrıntılar: docs/DESIGN.md</text></svg>

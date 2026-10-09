@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1250" height="860" viewBox="0 0 1250 860" role="img" aria-labelledby="title desc"><title id="title">Kavramsal veri ve ilişki grafı</title><desc id="desc">Bu kutular SQL varlıklarıdır; Python sınıf diyagramı değildir. Ok yönü yabancı anahtar / ilişki yönüdür.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M1,1 L9,5 L1,9" fill="none" stroke="#172b4d"/></marker><marker id="triangle" markerWidth="13" markerHeight="13" refX="12" refY="6" orient="auto"><path d="M1,1 L12,6 L1,11 Z" fill="white" stroke="#172b4d"/></marker></defs>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#172b4d;font-size:16px}.title{font-size:30px;font-weight:bold}.sub{font-size:15px;fill:#526479}.small{font-size:14px}.bold{font-weight:bold}line,path,rect,ellipse,circle{vector-effect:non-scaling-stroke}</style>
+<rect width="1250" height="860" fill="#f7f9fc"/>
+<text x="35" y="47" class="title" text-anchor="start">Kavramsal veri ve ilişki grafı</text>
+<text x="35" y="78" class="sub" text-anchor="start">Bu kutular SQL varlıklarıdır; Python sınıf diyagramı değildir. Ok yönü yabancı anahtar / ilişki yönüdür.</text>
+<rect x="55" y="140" width="290" height="120" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="69" y="168" class="bold" text-anchor="start">users · kullanıcı</text>
+<text x="69" y="195" class="" text-anchor="start">nickname, role, group_id</text>
+<text x="69" y="218" class="" text-anchor="start">Özel alanlar grafa çıkmaz</text>
+<rect x="490" y="140" width="280" height="120" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="504" y="168" class="bold" text-anchor="start">groups · grup</text>
+<text x="504" y="195" class="" text-anchor="start">id, name</text>
+<line x1="345" y1="195" x2="490" y2="195" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="365" y="178" class="small" text-anchor="start">N → 1</text>
+<rect x="490" y="360" width="280" height="120" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="504" y="388" class="bold" text-anchor="start">topics · konu</text>
+<text x="504" y="415" class="" text-anchor="start">title, group_ids, parent</text>
+<text x="504" y="438" class="" text-anchor="start">proposal_id</text>
+<line x1="635" y1="360" x2="635" y2="260" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="645" y="311" class="small" text-anchor="start">N ↔ N · JSON grup kimlikleri</text>
+<rect x="55" y="360" width="290" height="120" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="69" y="388" class="bold" text-anchor="start">messages · katkı</text>
+<text x="69" y="415" class="" text-anchor="start">author, topic_id, kind</text>
+<text x="69" y="438" class="" text-anchor="start">body, hidden, reply_to</text>
+<line x1="200" y1="360" x2="200" y2="260" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="210" y="310" class="small" text-anchor="start">N → 1 · yazar</text>
+<line x1="345" y1="417" x2="490" y2="417" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="355" y="400" class="small" text-anchor="start">N → 1</text>
+<rect x="920" y="360" width="280" height="120" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="934" y="388" class="bold" text-anchor="start">proposals · öneri</text>
+<text x="934" y="415" class="" text-anchor="start">author, status, applied</text>
+<text x="934" y="438" class="" text-anchor="start">group_ids, decision</text>
+<line x1="770" y1="417" x2="920" y2="417" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="785" y="400" class="small" text-anchor="start">1 → 1 · köken</text>
+<rect x="55" y="640" width="290" height="120" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="69" y="668" class="bold" text-anchor="start">helpful / points</text>
+<text x="69" y="695" class="" text-anchor="start">Tekil değerlendirme</text>
+<text x="69" y="718" class="" text-anchor="start">Tekil puan kaynağı</text>
+<line x1="200" y1="640" x2="200" y2="480" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="210" y="558" class="small" text-anchor="start">mesaj + kullanıcı</text>
+<text x="210" y="581" class="small" text-anchor="start">source=helpful:&lt;id&gt;</text>
+<rect x="490" y="640" width="280" height="120" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="504" y="668" class="bold" text-anchor="start">electorate / votes</text>
+<text x="504" y="695" class="" text-anchor="start">Öneri + kullanıcı tekil</text>
+<text x="504" y="718" class="" text-anchor="start">Açılış grubu sabittir</text>
+<path d="M920,450 L840,450 L840,695 L770,695" fill="none" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="850" y="565" class="small" text-anchor="start">önerinin</text>
+<text x="850" y="588" class="small" text-anchor="start">seçmenleri / oyları</text>
+<path d="M490,710 L405,710 L405,290 L345,230" fill="none" stroke="#172b4d" stroke-width="1.4" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<text x="415" y="611" class="small" text-anchor="start">user_id</text>
+<text x="920" y="165" class="small" text-anchor="start">/graph görünümü</text>
+<text x="920" y="188" class="small" text-anchor="start">Grup başına ≤30 üye</text>
+<text x="920" y="211" class="small" text-anchor="start">≤12 konu; konu başına</text>
+<text x="920" y="234" class="small" text-anchor="start">≤20 katkıcı ilişkisi</text>
+<text x="920" y="257" class="small" text-anchor="start">Özel profil metni yok.</text>
+<text x="35" y="838" class="small" text-anchor="start">Müzakere · Kaynak: bu depodaki uygulama · Ayrıntılar: docs/DESIGN.md</text></svg>

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1250" height="850" viewBox="0 0 1250 850" role="img" aria-labelledby="title desc"><title id="title">Çalışan mimari</title><desc id="desc">Tek süreç + SQLite; dış model, dağıtık mutabakat veya native mobil uygulama yok.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M1,1 L9,5 L1,9" fill="none" stroke="#172b4d"/></marker><marker id="triangle" markerWidth="13" markerHeight="13" refX="12" refY="6" orient="auto"><path d="M1,1 L12,6 L1,11 Z" fill="white" stroke="#172b4d"/></marker></defs>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#172b4d;font-size:16px}.title{font-size:30px;font-weight:bold}.sub{font-size:15px;fill:#526479}.small{font-size:14px}.bold{font-weight:bold}line,path,rect,ellipse,circle{vector-effect:non-scaling-stroke}</style>
+<rect width="1250" height="850" fill="#f7f9fc"/>
+<text x="35" y="47" class="title" text-anchor="start">Çalışan mimari</text>
+<text x="35" y="78" class="sub" text-anchor="start">Tek süreç + SQLite; dış model, dağıtık mutabakat veya native mobil uygulama yok.</text>
+<rect x="55" y="130" width="330" height="115" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="69" y="158" class="bold" text-anchor="start">Tarayıcı</text>
+<text x="69" y="185" class="" text-anchor="start">Jinja HTML + CSS + JS</text>
+<text x="69" y="208" class="" text-anchor="start">Manifest / çevrimdışı uyarısı</text>
+<rect x="520" y="130" width="360" height="115" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="534" y="158" class="bold" text-anchor="start">app.py · Flask</text>
+<text x="534" y="185" class="" text-anchor="start">Oturum / CSRF / rol kontrolü</text>
+<text x="534" y="208" class="" text-anchor="start">HTTP rotaları ve transaction sınırı</text>
+<line x1="385" y1="185" x2="520" y2="185" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="400" y="165" class="small" text-anchor="start">HTTP</text>
+<rect x="60" y="360" width="350" height="110" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="74" y="388" class="bold" text-anchor="start">voting.py</text>
+<text x="74" y="415" class="" text-anchor="start">start_voting / close_voting</text>
+<text x="74" y="438" class="" text-anchor="start">Deterministik iş akışı</text>
+<line x1="520" y1="235" x2="330" y2="360" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<rect x="60" y="625" width="350" height="120" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="74" y="653" class="bold" text-anchor="start">policy.py</text>
+<text x="74" y="680" class="" text-anchor="start">VotingPolicy Strategy</text>
+<text x="74" y="703" class="" text-anchor="start">R1 → R2 → R4 → R3 zinciri</text>
+<line x1="230" y1="470" x2="230" y2="625" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<rect x="520" y="360" width="360" height="110" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="534" y="388" class="bold" text-anchor="start">storage.py</text>
+<text x="534" y="415" class="" text-anchor="start">SQLite erişimi / event</text>
+<text x="534" y="438" class="" text-anchor="start">award / notify</text>
+<line x1="695" y1="245" x2="695" y2="360" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<line x1="410" y1="417" x2="520" y2="417" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<rect x="520" y="625" width="360" height="120" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="534" y="653" class="bold" text-anchor="start">SQLite · schema.sql</text>
+<text x="534" y="680" class="" text-anchor="start">users / proposals / votes / topics</text>
+<text x="534" y="703" class="" text-anchor="start">messages / versions / points</text>
+<text x="534" y="726" class="" text-anchor="start">events: hash bağlantılı olaylar</text>
+<line x1="695" y1="470" x2="695" y2="625" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="710" y="550" class="small" text-anchor="start">tek dosya; atomik yazma</text>
+<rect x="940" y="360" width="260" height="160" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="954" y="388" class="bold" text-anchor="start">ai.py</text>
+<text x="954" y="415" class="" text-anchor="start">SummaryService</text>
+<text x="954" y="438" class="" text-anchor="start">→ SummaryProvider</text>
+<text x="954" y="461" class="" text-anchor="start">→ DemoProvider</text>
+<text x="954" y="484" class="" text-anchor="start">Hata: yerel alıntı dönüşü</text>
+<path d="M880,200 L1070,200 L1070,360" fill="none" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="915" y="175" class="small" text-anchor="start">görünür veri seçimi</text>
+<text x="930" y="585" class="small" text-anchor="start">AI veritabanına yazmaz.</text>
+<text x="930" y="608" class="small" text-anchor="start">Oy / puan / gizleme kararı</text>
+<text x="930" y="631" class="small" text-anchor="start">AI çıktısına bağlı değildir.</text>
+<text x="515" y="793" class="small" text-anchor="start">scripts/replicate_ledger.py → iki yerel JSON kopyası (yalnız demo)</text>
+<text x="35" y="828" class="small" text-anchor="start">Müzakere · Kaynak: bu depodaki uygulama · Ayrıntılar: docs/DESIGN.md</text></svg>

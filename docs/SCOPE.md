@@ -1,36 +1,9 @@
-# Gereksinimler, kararlar ve kapsam
+# Kapsam özeti
 
-## Kesin talepler
-Kalıcı uçtan uca akış; Türkçe mobil web; r=0,50 minimum katılım; tek oy;
-seçmen dondurma; gizlilik ve roller; alt konu / düzenleme; kural engeli;
-azınlık gerekçeleri ve itiraz; öğrenme soruları, kaynak ve açıklama;
-tekrarsız katkı puanı; testler; tek sayfalık rapor ve gerçek GitHub adresi.
+Ürün adı **Müzakere**. Repo/DB adları ve eski kayıtlar korunur. İlk teslimin işlevsel kapsamı devam eder. r minimum katılım oranıdır; varsayılan 0,50.
 
-## Uygulama kararları
-Flask + SQLite kurulum ve kod izlemeyi kolaylaştırmak için seçildi.
-Öneri sahibi grupları önerir, yönetici kapsamı ve etkiyi onaylar.
-Kısıtlayıcı kararda %67 katılım ve 2/3 kabul, bağımsız inceleme gerekir.
-Yönetmelik parametresi ikinci yönetici onayıyla değişir. Üyeler kayıt anında bir gruba katılır.
-Puan politikası +5 / +3 ve UTC gününde 20 puan; günlük 40 mesajdır.
+- Çalışan: kayıt/giriş, rol/grup denetimi, öneri/alt konu/düzenleme, sabit seçmen, tek güncel oy, süreli sonuç, hak engeli, tartışma/sürüm, kaynak ve gerekçe, itiraz, yararlı katkı puanı, bildirim, bilirkişi, sınırlı ilişki şeması, hash bütünlük kontrolü.
+- Demo: AI alıntı/kelime eşleşmesi, iki yerel ledger dosyası. PWA manifesti ve çevrimdışı uyarısı vardır; fiziksel telefon kurulumu doğrulanmadı.
+- Eksik/ertelenen: gerçek model, bağımsız ağ mutabakatı, native uygulama, üretim dağıtımı, e-posta/kimlik doğrulama, parola kurtarma, giriş hız sınırı, rol/grup yönetim arayüzü, tam semantik hak denetimi, yük/öğrenme başarısı ölçümü.
 
-## Uygulama sırası
-1. Kalıcı kimlik ve öneri/oy/sonuç/konu/tartışma akışı.
-2. Deterministik kurallar, sabit seçmen, azınlık ve gizleme incelemesi.
-3. Öğrenme katkıları, puan, sürümler, bilirkişi, keşif ve demo özet.
-4. Otomatik test, masaüstü/mobil kontrol, dokümantasyon ve rapor.
-5. GitHub gönderimi ve uzak SHA doğrulaması (tamamlandı).
-
-## Karşılanma özeti
-- 1–4: Mobil web ve temel akışlar çalışır; native yok.
-- 5: Grup katılımı, hak kuralları, itiraz ve sıkı inceleme çalışır; tam hak garantisi değildir.
-- 6: Mesaj gizleme / geçmiş / acil inceleme çalışır; öneri tarihindeki tüm bölüm için de kaldırma oylaması var.
-- 7: JSON kavram/ilişki modeli ve Python kuralları çalışır; tam ontoloji çıkarımı yok.
-- 8: Kişisel dashboard ve katkılar var; konu takibi yeni katkı bildirimi üretir.
-- 9: Filtreli ilişki şeması + liste var; fizik simülasyonlu graf değil.
-- 10: Uzmanlık, tarih, çıkar çatışması, gerekçeli görüş ve talep var.
-- 11: Yerel alıntı özeti ve kelime eşleşmeli benzer başlık uyarısı var. Gerçek model yok;
-  kategori ve çelişki ipuçları yalnız sözcük eşleştiren demo sağlayıcıdadır. Karşı görüşler alıntılara dahil edilir;
-  son 12 kayıt sınırı nedeniyle tüm çoğunluk/azınlık görüşlerini kapsama garantisi yok.
-- 12: Eklemeli hash zinciri ve iki dosyalı yerel kopyalama var; bağımsız düğümler/mutabakat yok.
-- 13–15: Testler, örnek senaryolar, belge ve ortak görsel dil var. Ayrıntılar TEST_RESULTS.md.
-- 16: Gerçek depo erişimi doğrulandı; yenilenen bağlantıyla kaynaklar main dalına yüklendi ve doğrulandı.
+Ayrıntılar: [eşleştirme](TRACEABILITY.md), [problem çerçevesi](PROBLEM.md), [tasarım kararları](DESIGN.md), [doğrulama](TEST_RESULTS.md), [demo](DEMO.md). Ders slaytlarındaki mini laboratuvarlar kapsam değildir; kitap içerikleri okunmuş gibi kaynak verilmez.

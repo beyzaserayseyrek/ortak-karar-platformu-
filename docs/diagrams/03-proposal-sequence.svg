@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="1050" viewBox="0 0 1300 1050" role="img" aria-labelledby="title desc"><title id="title">Öneriden kalıcı tartışmaya</title><desc id="desc">Kapanış erken yapılamaz. Süre dolduktan sonraki oturumlu istek prepare() üzerinden kapatır.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M1,1 L9,5 L1,9" fill="none" stroke="#172b4d"/></marker><marker id="triangle" markerWidth="13" markerHeight="13" refX="12" refY="6" orient="auto"><path d="M1,1 L12,6 L1,11 Z" fill="white" stroke="#172b4d"/></marker></defs>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#172b4d;font-size:16px}.title{font-size:30px;font-weight:bold}.sub{font-size:15px;fill:#526479}.small{font-size:14px}.bold{font-weight:bold}line,path,rect,ellipse,circle{vector-effect:non-scaling-stroke}</style>
+<rect width="1300" height="1050" fill="#f7f9fc"/>
+<text x="35" y="47" class="title" text-anchor="start">Öneriden kalıcı tartışmaya</text>
+<text x="35" y="78" class="sub" text-anchor="start">Kapanış erken yapılamaz. Süre dolduktan sonraki oturumlu istek prepare() üzerinden kapatır.</text>
+<rect x="25" y="115" width="190" height="65" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="39" y="143" class="bold" text-anchor="start">Üye / Yönetici</text>
+<line x1="120" y1="180" x2="120" y2="950" stroke="#172b4d" stroke-width="1.4" stroke-dasharray="6 5"/>
+<rect x="300" y="115" width="190" height="65" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="314" y="143" class="bold" text-anchor="start">app.py rotaları</text>
+<line x1="395" y1="180" x2="395" y2="950" stroke="#172b4d" stroke-width="1.4" stroke-dasharray="6 5"/>
+<rect x="575" y="115" width="190" height="65" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="589" y="143" class="bold" text-anchor="start">voting.py / policy</text>
+<line x1="670" y1="180" x2="670" y2="950" stroke="#172b4d" stroke-width="1.4" stroke-dasharray="6 5"/>
+<rect x="850" y="115" width="190" height="65" rx="12" fill="white" stroke="#0f766e" stroke-width="1.6"/>
+<text x="864" y="143" class="bold" text-anchor="start">storage / SQLite</text>
+<line x1="945" y1="180" x2="945" y2="950" stroke="#172b4d" stroke-width="1.4" stroke-dasharray="6 5"/>
+<line x1="120" y1="230" x2="395" y2="230" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="132" y="217" class="small" text-anchor="start">Üye: POST /proposal/new + CSRF</text>
+<line x1="395" y1="280" x2="945" y2="280" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="407" y="267" class="small" text-anchor="start">taslak INSERT + proposal_created</text>
+<line x1="120" y1="330" x2="395" y2="330" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="132" y="317" class="small" text-anchor="start">Yönetici: POST /start (grup / etki / süre)</text>
+<line x1="395" y1="380" x2="670" y2="380" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="407" y="367" class="small" text-anchor="start">start_voting(pid, hours)</text>
+<line x1="670" y1="430" x2="945" y2="430" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="682" y="417" class="small" text-anchor="start">seçmen listesi + r + deadline sabitlenir</text>
+<line x1="120" y1="485" x2="395" y2="485" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="132" y="472" class="small" text-anchor="start">Uygun üye: POST /vote</text>
+<line x1="395" y1="530" x2="945" y2="530" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="407" y="517" class="small" text-anchor="start">tekil oy UPSERT + event</text>
+<line x1="120" y1="600" x2="395" y2="600" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="132" y="587" class="small" text-anchor="start">Süre sonrası oturumlu GET</text>
+<line x1="395" y1="645" x2="670" y2="645" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="407" y="632" class="small" text-anchor="start">BEGIN IMMEDIATE; close_voting(pid)</text>
+<path d="M670,695 L770,695 L770,730 L670,730" fill="none" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="700" y="683" class="small" text-anchor="start">policy.evaluate → check_rules</text>
+<line x1="670" y1="770" x2="945" y2="770" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="682" y="757" class="small" text-anchor="start">karar; uygunsa konu / sürüm / puan</text>
+<line x1="670" y1="815" x2="945" y2="815" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="682" y="802" class="small" text-anchor="start">olaylar + bildirimler (prepare commit eder)</text>
+<line x1="395" y1="865" x2="120" y2="865" stroke="#172b4d" stroke-width="1.4" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<text x="132" y="852" class="small" text-anchor="start">karar gerekçesi + konu bağlantısı</text>
+<line x1="120" y1="920" x2="395" y2="920" stroke="#172b4d" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="132" y="907" class="small" text-anchor="start">POST /topic/&lt;id&gt;/message → kalıcı katkı</text>
+<text x="35" y="1028" class="small" text-anchor="start">Müzakere · Kaynak: bu depodaki uygulama · Ayrıntılar: docs/DESIGN.md</text></svg>

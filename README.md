@@ -1,8 +1,8 @@
-# Ortak — Akran öğrenmesi ve ortak karar platformu
+# Müzakere — Akran öğrenmesi ve ortak karar platformu
 
 Türkçe, mobil uyumlu bir üniversite ders projesi. Öğrenciler öğrenme soruları önerir, sabit seçmen listesiyle oy kullanır, kabul edilen konularda kaynak ve gerekçeli akran açıklamaları paylaşır.
 
-**Teslim durumu:** Kaynak kod, testler, kurulum dosyaları ve rapor GitHub `main` dalına gönderildi. Kaynak teslim commit'i: `226ebe2703b3ee314602d42653be62ff570ef0ac`. Yerel ve uzak Git ağaçları eşleştirilerek dosya bütünlüğü doğrulandı. Sonraki belge commit'i rapordaki bekleme notunu kaldırır.
+**Ders revizyonu:** Müzakere adı, deterministik politika stratejileri, kural zinciri, doğrulanan demo özet, tasarım belgeleri ve 7 SVG diyagram.
 
 **Kaynak deposu:** https://github.com/beyzaserayseyrek/ortak-karar-platformu-
 
@@ -83,7 +83,9 @@ Gerekçeler ve itirazlar kararın yanında kalır. Yönetici itiraza yanıt vere
 - **Python / Flask:** Okunabilir sunucu rotaları, sunucu tarafı HTML ve yetki denetimi.
 - **SQLite:** Kurulum gerektirmeyen kalıcı ilişkisel veri; yabancı anahtarlar, tek oy / yararlı değerlendirmesi kısıtları.
 - **Jinja / HTML / CSS / az miktarda JavaScript:** Türkçe duyarlı arayüz, önizleme, benzer başlık uyarısı, klavye odağı, durum metinleri. PWA manifesti ve çevrimdışı bağlantı uyarısı.
-- `app.py`: HTTP rotaları, yetki, veri işlemleri ve kapanış akışı.
+- `app.py`: HTTP rotaları, yetki, CSRF ve işlem sınırı.
+- `voting.py`: Oylamayı başlatma, sonuçlandırma ve kararı uygulama.
+- `storage.py`: SQLite erişimi, olay, puan ve bildirim yazma.
 - `policy.py`: Deterministik oy hesabı, R1–R4 ve hash doğrulaması.
 - `schema.sql`: İlişkiler, sürümler, sabit seçmenler, denetim ve puan kayıtları.
 - `ai.py`: Değiştirilebilir `SummaryProvider` arayüzü ve yerel `DemoProvider`.
@@ -103,7 +105,9 @@ Yazma istekleri SQLite `BEGIN IMMEDIATE` işlemlerinde yürür. CSRF, HttpOnly/S
 
 ## Yapay zekâ, olay günlüğü ve PWA sınırları
 
-**Demo AI:** Dış model çağrısı yoktur. Özet, son 12 görünür mesajdan bağlantılı alıntıdır; karşı görüşler de aynı kuralla alınır. Görüş dağılımının eksiksiz veya anlamsal özeti değildir. Gerçek sağlayıcı eklemek için `SummaryProvider` uygulanmalı; yalnız görünür mesajların `id`, `body`, `kind` alanları sınırı geçer. `AI_PROVIDER=demo` desteklenir. Gerçek API anahtarı gerekmez ve örnek dosyada bulunmaz. Benzer konu uyarısı başlık kelime eşleşmesidir. Demo sağlayıcı anahtar sözcüklerle sınıflandırma ve olası kural çelişkisi ipuçları sunar; gerçek model analizi değildir. Kesin kurallar ayrı ve deterministiktir.
+**Demo AI:** Dış model çağrısı yoktur. Her türden (açıklama, karşı gerekçe, soru, kaynak) sayfa başına en fazla 12 görünür mesajın tam alıntısını gösterir; devamı sayfalanır. Eski karşı görüşler yeni açıklamalarla aynı kota için yarışmaz. Özet, kaynak mesajın doğru sayfasına bağlanır. Oylama gerekçeleri için karar bağlantısı vardır. Anlamsal temsil garantisi yoktur.
+
+`SummaryService`, enjekte edilen `SummaryProvider` çıktısını tür, kaynak, kapsam ve tam metin açısından denetler. Sağlayıcı hatası/geçersiz çıktıda uyarılı yerel demoya döner. `AI_PROVIDER=demo` yereldir; desteklenmeyen değer uygulamayı durdurmadan aynı geri dönüşü tetikler. Gerçek API anahtarı gerekmez. Kategori/çelişki ipuçları anahtar sözcüklere, ilişkili konular başlık eşleşmesine dayanır. Bu alanların anlamsal doğruluğu garanti edilmez; oylama/puan/gizlemeyi değiştirmez. Gerçek entegrasyon ve gerçek model testleri yapılmadı. [Sentetik değerlendirme](docs/AI_EVALUATION.md).
 
 **Olay günlüğü:** Öneri, oy işlemi, sonuç, kural denetimi, düzenleme ve gizleme olayları hash bağlantılıdır. Olay türü, nesne kimliği, zaman, önceki hash tutulur; mesaj, özel profil bilgisi veya oy tercihi yazılmaz. Günlük uygulama seviyesinde eklemelidir; SQLite tetikleyicileri güncelleme / silmeyi engeller. Tam veritabanını kontrol eden saldırgan zinciri yeniden yazabilir veya son kısmını silebilir. Dış güvenilir hash sabitlemesi yoktur; bu çözüm tam değiştirilemezlik garantisi vermez.
 
@@ -129,26 +133,24 @@ Testler geçici SQLite dosyası ve kurgusal veriler kullanır. Oy hesabı sını
 
 Bu bir ders prototipidir. E-posta doğrulama, şifre sıfırlama, giriş denemesi hız sınırlaması, üyelik onayı, çoklu hesap engeli, at-rest profil şifreleme, yedekleme yönetimi, üretim dağıtımı ve yük testi yoktur. Kural motoru serbest metni semantik olarak okuyamaz; etki alanındaki yanlış beyanı yönetici yakalamalıdır. Moderatörün kötüye kullanımını tamamen önlemez; azınlık haklarını kesin garanti etmez.
 
-Konu takibi açıldığında yeni katkılar dashboard bildirimi üretir. Soru ve kaynak akışı çalışır; öneri taslağını sonradan düzenleme ekranı yoktur. Metin araması yalnız başlıklardadır. Graf görünümü sınırlı ilişki şemasıdır. Mesaj veya öneri anındaki tüm tartışma bölümü için kaldırma oylaması vardır; sonradan eklenen mesajlar bölüm önerisinin kapsamı dışında kalır. Yeni grup oluşturma ve rol atama için yönetim arayüzü yoktur. Otomatik zamanlayıcı yerine sonraki oturumlu istekte kapanış yapılır. Geniş listelerin bir kısmı uygulama içinde filtrelendiğinden büyük ölçeğe uygun değildir.
+Konu takibi açıldığında yeni katkılar dashboard bildirimi üretir. Soru ve kaynak akışı çalışır; öneri taslağını sonradan düzenleme ekranı yoktur. Metin araması yalnız başlıklardadır. Graf görünümü sınırlı ilişki şemasıdır. Mesaj veya öneri anındaki tüm tartışma bölümü için kaldırma oylaması vardır; sonradan eklenen mesajlar bölüm önerisinin kapsamı dışında kalır. Yeni grup oluşturma ve rol atama için yönetim arayüzü yoktur. Otomatik zamanlayıcı yerine sonraki oturumlu istekte kapanış yapılır. Konu/graf sorguları SQL içinde filtrelenip sınırlandırılır; bazı dashboard/yönetim listeleri büyük ölçek için hâlâ uyarlanmalıdır.
 
-## GitHub'a gönderme
+## Belgeler ve yeniden üretim
 
-`.gitignore`, `.env`, yerel veritabanı, anahtarlar ve üretilen dosyaları dışlar. `seed.py` yalnız kurgusal hesaplar içerir. Göndermeden önce `git status --short` ve `git diff --cached` kontrol edilir. Gönderim GitHub bağlantısı üzerinden tamamlandı. Yerel terminal için ayrıca Git kimlik doğrulaması gerekebilir.
+- [Problem çerçevesi, metrikler ve riskler](docs/PROBLEM.md)
+- [Tasarım incelemesi, SOLID ve ADR kayıtları](docs/DESIGN.md)
+- [Gereksinim–uygulama–test eşleştirmesi](docs/TRACEABILITY.md)
+- [7 diyagramın galerisi](docs/diagrams/index.html) · [SVG kaynak betiği](docs/diagrams/render.py)
+- [Test / tarayıcı sonuçları](docs/TEST_RESULTS.md) · [Ders demo sırası](docs/DEMO.md)
+- [Tek sayfalık PDF rapor](docs/rapor.pdf) · [HTML sürümü](docs/rapor.html)
+- [Teslim kaydı](docs/DELIVERY.md)
 
-GitHub bağlantısının hedef depo için **Contents: read and write** izni gerekir. Hesabın yönetici olması entegrasyonun yazma izni olduğu anlamına gelmez. Entegrasyon erişimini güncelledikten veya Git için kendi hesabınla kimlik doğruladıktan sonra:
+Diyagramları yeniden üretmek için `python docs/diagrams/render.py`. Rapor için isteğe bağlı `python -m pip install reportlab`, ardından `python docs/build_report.py`. Türkçe font yolu `REPORT_FONT` / `REPORT_FONT_BOLD` ile verilebilir; betik yaygın macOS/Linux font konumlarını da arar. Bu araçlar uygulamanın çalışması için gerekmez.
 
-```bash
-git remote -v
-git fetch origin
-# Uzak main varsa önce incele; farklı geçmişleri körlemesine birleştirme.
-git log --oneline --all --decorate -8
-git push -u origin main
-git rev-parse HEAD
-git ls-remote origin refs/heads/main
-```
+## GitHub teslimi
 
-Son iki SHA eşleşmeden gönderim tamamlanmış sayılmaz. Uzak dalda yeni değişiklik varsa önce koruyarak birleştirin; **force push kullanmayın**. İlk gönderim doğrulandı; rapor ve README teslim durumu güncellendi.
+Gerçek kaynak adresi: https://github.com/beyzaserayseyrek/ortak-karar-platformu-
 
-## Rapor
+`.gitignore` yerel DB, `.env`, oturum anahtarı, sanal ortam, `node_modules` ve geçici dosyaları dışlar. Ders PDF'leri ve gerçek kullanıcı bilgileri depoya eklenmez. `.env.example` yalnız boş/örnek yapılandırma içerir.
 
-`docs/rapor.pdf`: Türkçe tek A4; en altta okunabilir, tıklanabilir gerçek repository adresi. `docs/rapor.html`: tarayıcıdan açılabilir eşdeğer rapor. GitHub kaynak adresi canlı uygulama adresi olarak sunulmaz.
+Yerel değişiklik göndermeden önce `git status --short`, `git diff --cached`, testler ve `git fetch origin` ile uzak geçmiş kontrol edilir. Uzak değişiklikler korunur; force push kullanılmaz. Gönderimden sonra `git rev-parse HEAD` ile `git ls-remote origin refs/heads/main` karşılaştırılır. GitHub kaynak adresi çalışan uygulama adresi değildir; herkese açık canlı demo yayımlanmadı.
